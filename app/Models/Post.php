@@ -21,7 +21,7 @@ class Post extends Model
         'id_categoria',
     ];
 
-    public function categoria()
+    public function categorias()
     {
         return $this->belongsTo('App\Models\Categoria', 'id_categoria');
     }

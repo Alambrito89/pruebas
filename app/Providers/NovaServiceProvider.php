@@ -87,6 +87,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
-        //
+        Nova::resourcesIn(app_path('Nova'));
     }
 }

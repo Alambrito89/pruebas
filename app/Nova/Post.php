@@ -2,13 +2,15 @@
 
 namespace App\Nova;
 
+use App\Models\Productor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\ID;
-use App\Models\User;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Nova;
+use App\Models\Categoria;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Post extends Resource
 {
@@ -24,7 +26,7 @@ class Post extends Resource
      *
      * @var string
      */
-    public static $title = 'descripcion';
+    public static $title = 'titulo';
 
     /**
      * The columns that should be searched.
@@ -33,10 +35,7 @@ class Post extends Resource
      */
     public static $search = [
         'id',
-        'descripcion',
-        'id_categoria',
     ];
-
 
     /**
      * Get the fields displayed by the resource.
@@ -50,11 +49,7 @@ class Post extends Resource
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Título', 'titulo')->sortable()->rules('required', 'max:255'),
             Text::make('Descripción', 'descripcion')->sortable(),
-            BelongsTo::make('Categoria', 'categoria', '\App\Nova\Categoria')
-                ->searchable()
-                ->sortable()
-                ->required()
-                ->viewable(),
+            BelongsTo::make(__('categoria'), 'categorias', 'App\Nova\Categoria'),
             Date::make('Creado', 'created_at')->format('DD/MM/YYYY')
                 ->hideWhenCreating()
                 ->hideWhenUpdating()
@@ -106,18 +101,8 @@ class Post extends Resource
         return [];
     }
 
-    /**
-     * Register the application's Nova resources.
-     *
-     * @return void
-     */
-    protected function resources()
+    public static function relatableQuery(NovaRequest $request, $query)
     {
-        Nova::resourcesIn(app_path('Nova'));
-
-        Nova::resources([
-            User::class,
-            \App\Models\Post::class,
-        ]);
+       return $query;
     }
 }

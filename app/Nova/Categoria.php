@@ -21,7 +21,7 @@ class Categoria extends Resource
      *
      * @var string
      */
-    public static $title = 'id_categoria';
+    public static $title = 'descripcion';
 
     /**
      * The columns that should be searched.
@@ -30,7 +30,6 @@ class Categoria extends Resource
      */
     public static $search = [
         'id',
-        'descripcion',
     ];
 
     /**
@@ -44,6 +43,8 @@ class Categoria extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('Descripción'), 'descripcion')->sortable(),
+            HasMany::make(__('post'), 'post', Post::class)
+                ->singularLabel(__('Post')),
         ];
     }
 
